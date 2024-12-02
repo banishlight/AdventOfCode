@@ -1,3 +1,3 @@
 #! /bin/bash
 
-gcc main.cpp -o exec
+g++ main.cpp -o exec
