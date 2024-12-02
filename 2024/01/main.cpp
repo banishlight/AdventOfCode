@@ -34,11 +34,26 @@ int getDiff(std::vector<int>& list1, std::vector<int>& list2) {
     return total;
 }
 
+int getSimilarity(std::vector<int>& list1, std::vector<int>& list2) {
+    int total = 0;
+    for (int a = 0; a < list1.size(); a++) {
+        int score = 0;
+        for (int b = 0; b < list2.size(); b++) {
+            if (list1[a] == list2[b]) {
+                score += 1;
+            }
+        }
+        total += list1[a] * score;
+    }
+    return total;
+}
+
 int main() {
     std::vector<int> list1, list2;
     readInput(list1, list2);
     stable_sort(list1.begin(), list1.end());
     stable_sort(list2.begin(), list2.end());
     std::cout << getDiff(list1, list2) << std::endl;
+    std::cout << getSimilarity(list1, list2) << std::endl;
     return 0;
 }
