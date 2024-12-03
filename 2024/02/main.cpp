@@ -27,15 +27,16 @@ int getReports(std::vector<std::vector<int>>& reports) {
     return 0;
 }
 
-int checkLevel(std::vector<int>& level) {
+int checkLevel(std::vector<int>& level, bool byOne = false) {
     enum state {
         NONE,
         INCREASING,
         DECREASING
     };
     state myState = NONE;
+    bool removed = false;
     for (int i = 0; i < level.size() - 1; i++) {
-        if (myState == NONE) {
+        if (i == 0) {
             if(level[0] > level[1]) {
                 myState = DECREASING;
             }
@@ -45,24 +46,39 @@ int checkLevel(std::vector<int>& level) {
         }
         int curNum = level[i];
         int nextNum = level[i+1];
+        // This could be better but it gets the job done.
         if (myState == INCREASING) {
             if (!((nextNum - curNum) <= 3 && (nextNum - curNum) >= 1)) {
-                return 1;
+                if (byOne && !removed) {
+                    removed = true;
+                    level.erase(level.begin() + i);
+                    i = 0;
+                }
+                else { 
+                    return 1;
+                }
             }
         }
         else if (myState == DECREASING) {
             if (!((curNum - nextNum) <= 3 && (curNum - nextNum) >= 1)) {
-                return 1;
+                if (byOne && !removed) {
+                    removed = true;
+                    level.erase(level.begin() + i);
+                    i = 0;
+                }
+                else {
+                    return 1;
+                }
             }
         }
     }
     return 0;
 }
 
-int checkSafe(std::vector<std::vector<int>>& reports) {
+int checkSafe(std::vector<std::vector<int>>& reports, bool byOne = false) {
     int total = 0;
     for (int i = 0; i < reports.size(); i++) {
-        if (checkLevel(reports[i]) == 0) {
+        if (checkLevel(reports[i], byOne) == 0) {
             total += 1;
         }
     }
@@ -73,4 +89,5 @@ int main () {
     std::vector<std::vector<int>> reports;
     getReports(reports);
     std::cout << checkSafe(reports) << std::endl;
+    std::cout << checkSafe(reports, true) << std::endl;
 }
