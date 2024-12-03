@@ -6,7 +6,7 @@
 #include <string>
 
 int readInput(std::vector<int>& list1, std::vector<int>& list2) {
-    std::string filename = "input.txt";
+    std::string filename = "../01input.txt";
     // cin >> filename;
     std::ifstream file(filename);
     if (!file) {
